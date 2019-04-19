@@ -1,0 +1,371 @@
+{
+    "ApplicationName": "Intra",
+    "DisplayName": "Intra  Blockchain",
+    "Description": "Allows a simple transaction between a seller and a buyer in a marketplace.",
+    "ApplicationRoles": [
+      {
+        "Name": "Office",
+        "Description": " Office Environment"
+      },
+      {
+        "Name": "Warehouse1",
+        "Description": "1st Warehouse"
+      },
+      {
+        "Name": "Warehouse2",
+        "Description": "2nd Warehouse"
+      },
+      {
+        "Name": "ODM",
+        "Description": "Original Design Manufacturers (Assemblers)"   
+      },
+      {
+        "Name": "Supplier",
+        "Description": "Supplier"
+      },
+      {
+        "Name": "Guest",
+        "Description": "Guest"
+      }
+    ],
+     "Workflows": [
+      {
+        "Name": "Intra",
+        "DisplayName": "Intra  Blockchain",
+        "Description": "Handles the business logic for a simple buyer-seller scenario.",
+        "Initiators": [ "Office" ],
+        "StartState":  "ItemAvailable",
+        "Properties": [
+          {
+            "Name": "State",
+            "DisplayName": "State",
+            "Description": "Holds the state of the contract",
+            "Type": {
+              "Name": "state"
+            }
+          },
+          {
+            "Name": "Description",
+            "DisplayName": "Description",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "string"
+            }
+          },
+          {
+            "Name": "Quantity_W1",
+            "DisplayName": "Quantity_W1",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          {
+            "Name": "Quantity_W2",
+            "DisplayName": "Quantity_W2",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          {
+            "Name": "Quantity_ODM",
+            "DisplayName": "Quantity_ODM",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          {
+            "Name": "Quantity_Part1_Supplier",
+            "DisplayName": "Quantity_Motherboard",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          {
+            "Name": "Quantity_Part2_Supplier",
+            "DisplayName": "Quantity_RAM",
+            "Description": "Describes the asset being sold",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          
+          {
+            "Name": "Price",
+            "DisplayName": "Price",
+            "Description": "The asking price for the asset",
+            "Type": {
+              "Name": "money"
+            }
+          },
+          {
+            "Name": "InstanceBuyer",
+            "DisplayName": "ODM ",
+            "Description": "The user that places an offer for this asset",
+            "Type": {
+              "Name": "ODM"
+            }
+          },
+          {
+            "Name": "InstanceSupplier",
+            "DisplayName": "Supplier",
+            "Description": "The seller of this particular asset",
+            "Type": {
+              "Name": "Supplier"
+            }
+          }
+        ],
+        "Constructor": {
+          "Parameters": [
+            {
+              "Name": "description",
+              "Description": "The description of this asset",
+              "DisplayName": "Description",
+              "Type": {
+                "Name": "string"
+              }
+            },
+            {
+              "Name": "price",
+              "Description": "The price of this asset",
+              "DisplayName": "Price",
+              "Type": {
+                "Name": "money"
+              }
+            }
+              
+          ]
+        },
+        "Functions": [
+          {
+            "Name": "MakeOffer",
+            "DisplayName": "Make Offer",
+            "Description": "Make an offer",
+            "Parameters": [
+              {
+                "Name": "offerPrice",
+                "Description": "Offer Price",
+                "DisplayName": "Offer Price",
+                "Type": {
+                  "Name": "money"
+                }
+              },
+              {
+                "Name": "quantity",
+                "Description": "The number of this asset",
+                "DisplayName": "quantity",
+                "Type": {
+                  "Name": "money"
+                }
+              }
+            ]
+          },
+          {
+            "Name": "AcceptOffer",
+            "DisplayName": "Accept Offer",
+            "Description": "Accept the offer made",
+            "Parameters": []
+          },
+          {
+            "Name": "Reject",
+            "DisplayName": "Reject Offer",
+            "Description": "Reject the offer made",
+            "Parameters": []
+          },
+          {
+            "Name": "Requirement_W1",
+            "DisplayName": "Make Requirement for Warehouse 1",
+            "Description": "Reject the offer made",
+            "Parameters": [
+                {
+                        "Name": "quantity_w1",
+                        "Description": "The number of this asset",
+                        "DisplayName": "Quantity_W1",
+                        "Type": {
+                          "Name": "money"
+                        } 
+                }
+            ]
+          },
+
+          {
+            "Name": "Requirement_W2",
+            "DisplayName": "Make Requirement for Warehouse 2",
+            "Description": "Reject the offer made",
+            "Parameters": [
+                {
+                        "Name": "quantity_w2",
+                        "Description": "The number of this asset",
+                        "DisplayName": "Quantity_W2",
+                        "Type": {
+                          "Name": "money"
+                        } 
+                }
+            ]
+          },
+          {
+            "Name": "Requirement_ODM",
+            "DisplayName": "Requirement made from Warehouse ",
+            "Description": "Reject the offer made",
+            "Parameters": [
+                {
+                        "Name": "quantity_odm",
+                        "Description": "The number of this asset",
+                        "DisplayName": "Quantity_ODM",
+                        "Type": {
+                          "Name": "money"
+                        } 
+                }
+            ]
+          }         
+        ],
+        "States": [
+          {
+            "Name": "ItemAvailable",
+            "DisplayName": "Item Available",
+            "Description": "The item is available",
+            "PercentComplete": 10,
+            "Style": "Success",
+            "Transitions": [
+              {
+                "AllowedRoles": [ "Office" ],
+                "AllowedInstanceRoles": [],
+                "Description": "Make an offer for this asset",
+                "Function": "Requirement_W1",
+                "NextStates": [ "OrderAcceptedByW1" ],
+                "DisplayName": "ReqForW1"
+              },
+              {
+                "AllowedRoles": [ "Office" ],
+                "AllowedInstanceRoles": [],
+                "Description": "Make an offer for this asset",
+                "Function": "Requirement_W2",
+                "NextStates": [ "OrderAcceptedByW2" ],
+                "DisplayName": "ReqForW2"
+              }
+            ]
+          },
+          {
+            "Name": "OrderAcceptedByW1",
+            "DisplayName": "Order Accepted by Warehouse 1",
+            "Description": "Offer has been placed for the item",
+            "PercentComplete": 30,
+            "Style": "Success",
+            "Transitions": [
+              {
+                "AllowedRoles": ["Warehouse1"],
+                "AllowedInstanceRoles": [  ],
+                "Description": "Accept the proposed offer for the item",
+                "Function": "AcceptOffer",
+                "NextStates": [ "OrderForODM" ],
+                "DisplayName": "Accept Offer"
+              },
+              {
+                "AllowedRoles": [ "Warehouse1"],
+                "AllowedInstanceRoles": [  ],
+                "Function": "AcceptOffer",
+                "Description": "Reject the proposed offer for the item",
+                "NextStates": [ "ItemSent" ],
+                "DisplayName": "Shipping To  Office"
+              }
+            ]
+          },
+          {
+            "Name": "OrderAcceptedByW2",
+            "DisplayName": "Order Accepted by Warehouse 2",
+            "Description": "Offer has been placed for the item",
+            "PercentComplete": 30,
+            "Style": "Success",
+            "Transitions": [
+              {
+                "AllowedRoles": ["Warehouse2"],
+                "AllowedInstanceRoles": [  ],
+                "Description": "Accept the proposed offer for the item",
+                "Function": "AcceptOffer",
+                "NextStates": [ "OrderForODM" ],
+                "DisplayName": "Accept Offer"
+              },
+              {
+                "AllowedRoles": [ "Warehouse2"],
+                "AllowedInstanceRoles": [  ],
+                "Description": "Reject the proposed offer for the item",
+                "Function": "AcceptOffer",            
+                "NextStates": [ "ItemSent" ],
+                "DisplayName": "Shipping To  Office"
+              }
+            ]
+          },
+          {
+            "Name": "OrderForODM",
+            "DisplayName": "Order Sent To ODM From Warehouse 1",
+            "Description": "Asset transfer process is complete",
+            "PercentComplete": 50,
+            "Style": "Success",
+            "Transitions": [
+              {
+                "AllowedRoles": [ "ODM" ],
+                "AllowedInstanceRoles": [],
+                "Description": "Make an offer for this asset",
+                "Function": "AcceptOffer",
+                "NextStates": [ "OrderForSupplier" ],
+                "DisplayName": "Order For ODM"
+              }
+            ]
+          },
+          {
+            "Name": "OrderForSupplier",
+            "DisplayName": "Order For Supplier",
+            "Description": "Offer has been placed for the item",
+            "PercentComplete": 70,
+            "Style": "Success",
+            "Transitions": [
+              {
+                "AllowedRoles": ["ODM"],
+                "AllowedInstanceRoles": [  ],
+                "Description": "Accept the proposed offer for the item",
+                "Function": "MakeOffer",
+                "NextStates": [ "ShipFromSupplier" ],
+                "DisplayName": "Make Offer"
+              }
+            ]
+          },
+          {
+            "Name": "ShipFromSupplier",
+            "DisplayName": "Ship From Supplier",
+            "Description": "Asset transfer process is complete",
+            "PercentComplete": 90,
+            "Style": "Success",
+            "Transitions": [
+                {
+                    "AllowedRoles": ["Supplier"],
+                    "AllowedInstanceRoles": [  ],
+                    "Description": "Accept the proposed offer for the item",
+                    "Function": "AcceptOffer",
+                    "NextStates": [ "ItemSent" ],
+                    "DisplayName": "Item Sent"
+                  },
+                  {
+                    "AllowedRoles": [ "Supplier"],
+                    "AllowedInstanceRoles": [  ],
+                    "Description": "Reject the proposed offer for the item",
+                    "Function": "Reject",
+                    "NextStates": [ "OrderForSupplier" ],
+                    "DisplayName": "Reject"
+                  }
+            ]
+          },
+          {
+            "Name": "ItemSent",
+            "DisplayName": "Item Sent",
+            "Description": "Asset transfer process is complete",
+            "PercentComplete": 100,
+            "Style": "Success",
+            "Transitions": []
+          }
+        ]
+      }
+    ]
+  }
